@@ -1,0 +1,12 @@
+# Local terraform directories
+**/.terraform/*
+
+# .tfstate files (They contain secrets! Never commit them)
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# Variables files containing real secrets
+*.tfvars
