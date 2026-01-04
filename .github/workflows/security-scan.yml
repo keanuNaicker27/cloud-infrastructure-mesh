@@ -1,0 +1,35 @@
+name: "Security Scan"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  tfsec:
+    name: "Infrastructure Security Scan"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run tfsec
+        uses: aquasecurity/tfsec-action@v1.0.0
+        with:
+          working_directory: terraform/
+          soft_fail: false # Hard fail if high-severity security holes are found
+
+  checkov:
+    name: "Compliance Scan (Checkov)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: terraform/
+          framework: terraform
+          quiet: true
+          # This catches issues like missing S3 Object Locks for your audit vault
